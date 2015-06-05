@@ -1,6 +1,7 @@
 
 #if defined(_WIN32) || defined(_WIN64)
-#include <windows.h>
+#include <thread>
+#include <ctime>
 #else
 #include <sys/time.h>
 #include <unistd.h>
@@ -9,7 +10,7 @@
 unsigned long get_now_time()
 {
 #if defined(_WIN32) || defined(_WIN64)
-	return GetTickCount();
+    return static_cast<unsigned long>(std::time(nullptr));
 #else
 	timeval now;
 	gettimeofday(&now, NULL);
@@ -20,7 +21,7 @@ unsigned long get_now_time()
 void custom_sleep(unsigned long millisecond)
 {
 #if defined(_WIN32) || defined(_WIN64)
-	Sleep(millisecond);
+    std::this_thread::sleep_for( std::chrono::milliseconds( millisecond ) );
 #else
 	usleep(millisecond*1000);
 #endif

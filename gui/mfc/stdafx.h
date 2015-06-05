@@ -1,48 +1,42 @@
-
-// stdafx.h : 标准系统包含文件的包含文件，
-// 或是经常使用但不常更改的
-// 特定于项目的包含文件
-
 #pragma once
 
-#ifndef _SECURE_ATL
-#define _SECURE_ATL 1
-#endif
-
 #ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN            // 从 Windows 头中排除极少使用的资料
+#define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
 
 #include "targetver.h"
 
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // 某些 CString 构造函数将是显式的
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
 
-// 关闭 MFC 对某些常见但经常可放心忽略的警告消息的隐藏
+// turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
 
-#include <afxwin.h>         // MFC 核心组件和标准组件
-#include <afxext.h>         // MFC 扩展
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
 
 
-#include <afxdisp.h>        // MFC 自动化类
+#include <afxdisp.h>        // MFC Automation classes
 
 
 
 #ifndef _AFX_NO_OLE_SUPPORT
-#include <afxdtctl.h>           // MFC 对 Internet Explorer 4 公共控件的支持
+#include <afxdtctl.h>           // MFC support for Internet Explorer 4 Common Controls
 #endif
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>             // MFC 对 Windows 公共控件的支持
+#include <afxcmn.h>             // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
+#include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
-
+#include <atlimage.h>
 
 #include <memory>
+#include <thread>
 #include <string>
 #include <vector>
 
+#include "camera.hpp"
+#include "filter.hpp"
 
 #pragma comment(lib,"VideoMgr.lib")
 
@@ -53,7 +47,8 @@
 #pragma comment (lib, "opencv_imgproc249d.lib")
 #pragma comment (lib, "opencv_highgui249d.lib")
 #pragma comment (lib, "opencv_objdetect249d.lib")
-//#pragma comment (lib, "opencv_video249d.lib")
+#pragma comment (lib, "opencv_ocl249d.lib")
+#pragma comment (lib, "opencv_gpu249d.lib")
 #endif
 
 #ifdef NDEBUG
@@ -61,7 +56,8 @@
 #pragma comment (lib, "opencv_imgproc249.lib")
 #pragma comment (lib, "opencv_highgui249.lib")
 #pragma comment (lib, "opencv_objdetect249.lib")
-//#pragma comment (lib, "opencv_vxideo249.lib")
+#pragma comment (lib, "opencv_ocl249.lib")
+#pragma comment (lib, "opencv_gpu249.lib")
 #endif
 
 //ffmpeg library
@@ -69,7 +65,6 @@
 #pragma comment (lib, "avformat.lib")
 #pragma comment (lib, "avutil.lib")
 #pragma comment (lib, "swscale.lib")
-//#pragma comment (lib, "swresample.lib")
 #endif
 
 

@@ -1,12 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VideoMgr", "VideoMgr\VideoMgr.vcxproj", "{6CBD7A5D-951B-461D-93C4-BE0E57F8946B}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Camera", "gui\mfc\Camera.vcxproj", "{352F6AE7-9A80-472F-8049-0EFEC51B26EE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32", "gui\win32\win32.vcxproj", "{3DC5D537-61B1-48CC-812B-DF6B2F0A03B7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6CBD7A5D-951B-461D-93C4-BE0E57F8946B} = {6CBD7A5D-951B-461D-93C4-BE0E57F8946B}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "videomgr", "videomgr\videomgr.vcxproj", "{E32ED04E-E600-4CDF-84C4-60BAA5391612}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,14 +13,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CBD7A5D-951B-461D-93C4-BE0E57F8946B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6CBD7A5D-951B-461D-93C4-BE0E57F8946B}.Debug|Win32.Build.0 = Debug|Win32
-		{6CBD7A5D-951B-461D-93C4-BE0E57F8946B}.Release|Win32.ActiveCfg = Release|Win32
-		{6CBD7A5D-951B-461D-93C4-BE0E57F8946B}.Release|Win32.Build.0 = Release|Win32
-		{3DC5D537-61B1-48CC-812B-DF6B2F0A03B7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3DC5D537-61B1-48CC-812B-DF6B2F0A03B7}.Debug|Win32.Build.0 = Debug|Win32
-		{3DC5D537-61B1-48CC-812B-DF6B2F0A03B7}.Release|Win32.ActiveCfg = Release|Win32
-		{3DC5D537-61B1-48CC-812B-DF6B2F0A03B7}.Release|Win32.Build.0 = Release|Win32
+		{352F6AE7-9A80-472F-8049-0EFEC51B26EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{352F6AE7-9A80-472F-8049-0EFEC51B26EE}.Debug|Win32.Build.0 = Debug|Win32
+		{352F6AE7-9A80-472F-8049-0EFEC51B26EE}.Release|Win32.ActiveCfg = Release|Win32
+		{352F6AE7-9A80-472F-8049-0EFEC51B26EE}.Release|Win32.Build.0 = Release|Win32
+		{E32ED04E-E600-4CDF-84C4-60BAA5391612}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E32ED04E-E600-4CDF-84C4-60BAA5391612}.Debug|Win32.Build.0 = Debug|Win32
+		{E32ED04E-E600-4CDF-84C4-60BAA5391612}.Release|Win32.ActiveCfg = Release|Win32
+		{E32ED04E-E600-4CDF-84C4-60BAA5391612}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

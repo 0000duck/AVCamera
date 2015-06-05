@@ -7,28 +7,27 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include <boost/signals2/signal.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
+#include <functional>
+#include <memory>
+
 
 namespace VideoMgr
 {
 	Camera::Camera()
 		: _status(CREATED)
-		, _camera_thread(boost::bind(&Camera::thread_task, this))
 	{
 		av_register_all();
 
-		_video.open(0);
+		_video = std::make_shared<cv::VideoCapture>(0);
+		_camera_thread = std::thread(std::bind(&Camera::thread_task, this));
 	}
 
 	Camera::~Camera()
 	{
-		_camera_thread.interrupt();
 		_camera_thread.join();
-		_video.release();
+		_video->release();
 		_h264.reset();
-		_filter.reset();
+		_filters.clear();
 	}
 
 
@@ -43,12 +42,33 @@ namespace VideoMgr
 			if( _status == CREATED)
 			{
 				timer = curr_time = get_now_time();
-				boost::this_thread::sleep(boost::posix_time::microseconds(800)); continue;
+				if (!_video->isOpened())
+				{
+					custom_sleep(1800); continue;
+				}
+				*_video >> frame;
+				// Filter
+				for (auto& theFilter : _filters)
+				{
+					theFilter->process_frame(frame);
+				}
+
+				curr_time = get_now_time();
+				if (_last_status == PAUSED)
+				{
+					timer = curr_time - 40;
+					_last_status = _status;
+				}
+				duration = curr_time - timer;
+				frame.copyTo(_last_frame);//backup to last_frame everyone in recording
+
+				if (refresh_callback) refresh_callback();
+
 			}
 			else if(_status == PAUSED)
 			{
 				curr_time = get_now_time();
-				boost::this_thread::sleep(boost::posix_time::microseconds(800)); continue;
+				custom_sleep(1800); continue;
 			}
 			else if(_status == STOPPED)
 			{
@@ -57,50 +77,39 @@ namespace VideoMgr
 				{
 					_h264->close();
 					_h264.reset();
-					_filter.reset();
 					_last_status = _status;
 				}
 				timer = curr_time = get_now_time();
-				boost::this_thread::sleep(boost::posix_time::microseconds(800)); continue;
+				custom_sleep(1800); continue;
 			}
 			else if(_status == RECORDING)
 			{
-				_video >> frame;
+				*_video >> frame;
 				// Filter
-				bool isEncode = true;
-				isEncode = isEncode && _filter->give_up_frame(frame, 5);
-				isEncode = isEncode && _filter->show_datetime(frame);
+				//_filter->show_datetime(frame);
 				//
 
 				curr_time = get_now_time();
 				//cv::imshow("video", frame); for test
-				unsigned long dur = curr_time - timer;
-				if(isEncode)
+				if(_last_status == PAUSED)
 				{
-					duration += dur;
-					_h264->write(frame, duration > 40 ? duration : 40);
-					if(duration < 40) boost::this_thread::sleep(boost::posix_time::microseconds(40 - duration));
-					//cv::waitKey(duration > 40 ? 1 : (40 - duration));
-					duration = 0;
+					timer = curr_time - 40;
+					_last_status = _status;
 				}
-				else
-				{
-					duration += dur;
-					//boost::this_thread::sleep(boost::posix_time::microseconds(10));
-				}
+				duration = curr_time - timer;
 
-				//send sign
-				refresh_sign();
+				_h264->write(frame, duration > 40 ? duration : 40);
+				if(duration < 40) custom_sleep(40 - duration);
+				frame.copyTo(_last_frame);//backup to last_frame everyone in recording
 
 				timer = curr_time;
-				frame.copyTo(last_frame);//backup to last_frame everyone in recording
 			}
 			else if(_status == EXITED)
 			{
 				if(_last_status == STOPPED
 					|| _last_status == CREATED)
 				{
-					;//cv::destroyWindow("video");//for test
+					;
 				}
 				break;
 			}
@@ -116,11 +125,8 @@ namespace VideoMgr
 		if(!_h264->create(file, width, height, bit_rate))
 			return static_cast<int>(CREATED);
 
-		//create filter
-		_filter.reset(new Filter(width, height));
-
 		//create last frame mat
-		last_frame.create(height, width, CV_8UC3);
+		_last_frame.create(height, width, CV_8UC3);
 
 		_last_status = _status;
 		if(_status == CREATED)
@@ -140,7 +146,7 @@ namespace VideoMgr
 
 	int Camera::pause()
 	{
-		if(!_video.isOpened()) return 0;
+		if(!_video->isOpened()) return 0;
 		_last_status = _status;
 		if(_status == RECORDING)
 		{
@@ -151,9 +157,9 @@ namespace VideoMgr
 
 	int Camera::stop()
 	{
-		if(!_video.isOpened()) return 0;
+		if(!_video->isOpened()) return 0;
 		_last_status = _status;
-		last_frame.release();
+		_last_frame.release();
 		if(_status == CREATED)
 		{
 			_status = STOPPED;
@@ -168,17 +174,23 @@ namespace VideoMgr
 		}
 		return static_cast<int>(_status);
 	}
+
 	int Camera::exit()
 	{
+		refresh_callback = nullptr;
 		stop();
-		boost::this_thread::sleep(boost::posix_time::microseconds(800));
 		_status = EXITED;
 		return static_cast<int>(_status);
 	}
 
 	void Camera::get_curr_frame( cv::Mat& frame )
 	{
-		frame = last_frame;//it is not copy memory
+		frame = _last_frame;//it is not copy memory
+	}
+
+	std::vector<std::shared_ptr<Filter>>& Camera::Filters()
+	{
+		return _filters;
 	}
 
 }

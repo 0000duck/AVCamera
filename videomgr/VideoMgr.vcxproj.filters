@@ -1,45 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
+    <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="资源文件">
+    <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Filter Include="Header Files\filters">
+      <UniqueIdentifier>{879cf66a-417b-4f06-a7c1-4a4c05adcfe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filters">
+      <UniqueIdentifier>{971e3d8e-e2c3-4407-aa72-ff63d7af58f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\camera.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\filter.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\h264writer.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\util.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filters\showdatetimefilter.hpp">
+      <Filter>Header Files\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filters\blurfilter.hpp">
+      <Filter>Header Files\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filters\facefilter.hpp">
+      <Filter>Header Files\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="include\filters\detectionface.hpp">
+      <Filter>Header Files\filters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src/camera.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/filter.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\h264writer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/h264writer.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="src\filters\showdatetimefilter.cpp">
+      <Filter>Source Files\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filters\blurfilter.cpp">
+      <Filter>Source Files\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filters\facefilter.cpp">
+      <Filter>Source Files\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filters\detectionface.cpp">
+      <Filter>Source Files\filters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
